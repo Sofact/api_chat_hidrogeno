@@ -29,6 +29,7 @@ Route::group(['middleware' => 'api'], function($router){
 
 Route::group(["prefix" => "users"], function($router){
     Route::post('/profile-user', "User\ProfileUserController@profile_user");
+    Route::get('/contact-user', "User\ProfileUserController@contactUsers");
 });
 
 
