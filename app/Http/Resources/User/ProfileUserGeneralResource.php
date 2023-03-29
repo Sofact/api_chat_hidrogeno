@@ -15,10 +15,18 @@ class ProfileUserGeneralResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            "id"=>$this->resource->id,
             "name"=>$this->resource->name,
-            "surname" =>$this->resource->surname,
             "email" =>$this->resource->email,
-            "usr_avatar"=> $this->resource->acatar ? env("APP_URL")."storage/".$this->resource->avatar : "https://www.flaticon.es/icono-gratis/usuario_1177568?term=usuario&page=1&position=2&origin=tag&related_id=1177568"
+            "email_verified_at" => $this->resource->emaiul_verified_at,
+            "password" =>$this->resource->password,
+            "remember_token" =>$this->resource->remember_token,
+            "created_at" =>$this->resource->created_at,
+            "updated_at" =>$this->resource->updated_at,
+            "usr_empresa" =>$this->resource->usr_empresa,
+            "usr_cargo" =>$this->resource->usr_cargo,
+            "usr_perfil" =>$this->resource->usr_perfil,
+            "usr_avatar"=> $this->resource->usr_avatar ? $this->resource->usr_avatar : "non-avatar.png"
 
         ];
     }

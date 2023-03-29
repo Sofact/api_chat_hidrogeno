@@ -4,19 +4,20 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use app\Models\User;
-use Illuiminate\Support\Facades\Storage;
+use App\Models\User;
+
 use App\Http\Resources\User\ProfileUserGeneralResource;
 
 class ProfileUserController extends Controller
 {
     public function __construct(){
         
-        $this->middleware('auth:api');
+        $this->middleware('auth:api', ['except' => 'contactUsers']);
     }
 
     public function profile_user(Request $request){
     
+        echo("funciona el profile user");
     /*
         $user = auth('api')->user();
         $userModel = User::findOrFail($user->id);
@@ -34,8 +35,10 @@ class ProfileUserController extends Controller
     }
 
     public function contactUsers(){
-    
-        $users = User::where("id","<>",auth("api")->id)->orderBy("id","desc")->get();
+
+
+
+        $users = User::where('id','<>',auth('api')->user()->id)->orderBy('id','desc')->get();
         return response()->json(["users" => $users->map(function($user){
             return ProfileUserGeneralResource::make($user);
         }),

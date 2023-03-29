@@ -55,28 +55,28 @@ class ChatController extends Controller
             ];
 
             if (count($chats)> 0){
-                foreach($chats as $key =>$chat){
+                foreach($chats as $key =>$chats){
                     $data["messages"][] =[
-                            "id" => $chat->id,
+                            "id" => $chats->id,
                             "sender" => [
-                                "id" => $chat -> FromUser -> id,
-                                "full_name" => $chat-> FromUser->name.' '.$chat->FromUser->surname,
-                                "avatar" => $chat->FromUser->avatar ? env("APP_URL")."storage/".$chat->FromUser->avatar : NULL,
+                                "id" => $chats -> FromUser -> id,
+                                "full_name" => $chats-> FromUser->name,
+                                "avatar" => $chats->FromUser->avatar ? env("APP_URL")."storage/".$chats->FromUser->avatar : "non-avatar.png",
 
                             ],
-                            "message" => $chat->message,
+                            "message" => $chats->message,
                             //fillw
-                            "read_at" => $chat->read_at,
-                            "time" => $chat->created_at->diffForHummans(),
-                            "created_at" => $chat -> created_at, 
+                            "read_at" => $chats->read_at,
+                            "time" => $chats->created_at->diffForHummans(),
+                            "created_at" => $chats -> created_at, 
                     ];
                 }
             }else{
-            $data["messages"][] = [];
+            $data["messages"] = [];
             }
 
             $data["exist"] = 1;
-            $data["last_page"] = $chat->lastPage();
+            $data["last_page"] = $chats->lastPage();
             return response()->json($data);
         }else{
         
@@ -96,7 +96,7 @@ class ChatController extends Controller
             $data["user"]=[
                 
                     "id"=>$to_user->id,
-                    "full_name" => $to_user->name.' '.$to_user->surname,
+                    "full_name" => $to_user->name,
                     "avatar"=> $to_user->avatar ? env("APP_URL")."storage/".$to_user->avatar : NULL,
             ];
 
@@ -112,11 +112,12 @@ class ChatController extends Controller
     }
 
     public function sendMessageText(Request $request){
+
     
         date_default_timezone_set("America/Bogota");
 
         $request->request->add(["from_user_id" => auth('api')->user()->id]);
-        $chat = Chat::create($$request->all());
+        $chat = Chat::create($request->all());
 
         $chat->ChatRoom->update(["last_at"=> now()-> format("Y-m-d H:i:s.u")]);
 
@@ -124,6 +125,8 @@ class ChatController extends Controller
         
         //NOTIFICAR A NUESTRA SALA DE CHAT
         // NOTIFICAMOS A LA SALA DE CHAT DEL SEGUNDO USUARIO
+
+        return response()->json(["message"=> 200]);
     }
 
     public function listMyChats (){

@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JWTController;
+use App\Http\Controllers\User\ProfileUserController;
+use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\Chat\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,11 +28,17 @@ Route::group(['middleware' => 'api'], function($router){
     Route::post('/logout', [JWTController::class, 'logout']);
     Route::post('/refresh', [JWTController::class, 'refresh']);
     Route::post('/profile', [JWTController::class, 'profile']);
+    Route::get('/users/contact', [ProfileUserController::class, 'contactUsers']);
+    Route::get('/agenda', [AgendaController::class, 'getAllAgenda']);
+    Route::post('/start-chat', [ChatController::class, 'startChat']);
+    
 });
 
-Route::group(["prefix" => "users"], function($router){
-    Route::post('/profile-user', "User\ProfileUserController@profile_user");
-    Route::get('/contact-user', "User\ProfileUserController@contactUsers");
-});
+Route::group(['prefix' => 'chat'], function($router){
 
+   // Route::post('/start-chat', [ChatController::class, 'startChat']);
+    Route::post('/list-my-chat-room', [ChatController::class, 'listMyChats']);
+    Route::post('/send-message-txt', [ChatController::class, 'sendMessageText']);
+
+});
 
