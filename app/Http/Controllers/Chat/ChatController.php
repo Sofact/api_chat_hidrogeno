@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Chat;
 
+use App\Events\SendMessageChat;
 use App\Http\Resources\Chat\ChatGResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -54,7 +55,7 @@ class ChatController extends Controller
                 
                     "id"=>$to_user->id,
                     "full_name" => $to_user->name,
-                    "avatar"=> $to_user->avatar ? env("APP_URL")."storage/".$to_user->avatar : NULL,
+                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : NULL,
             ];
     
 
@@ -66,7 +67,7 @@ class ChatController extends Controller
                             "sender" => [
                                 "id" => $chat -> FromUser-> id,
                                 "full_name" => $chat-> FromUser->name,
-                                "avatar" => $chat->FromUser->avatar ? $chat->FromUser->avatar : "non-avatar.png",
+                                "avatar" => $chat->FromUser->usr_avatar ? $chat->FromUser->usr_avatar : "non-avatar.png",
 
                             ],
                             
@@ -104,7 +105,7 @@ class ChatController extends Controller
                 
                     "id"=>$to_user->id,
                     "full_name" => $to_user->name,
-                    "avatar"=> $to_user->avatar ? env("APP_URL")."storage/".$to_user->avatar : NULL,
+                    "avatar"=> $to_user->usr_avatar ? env("APP_URL")."storage/".$to_user->usr_avatar : "non-avatar.png",
             ];
 
             $data["messages"] = [];
@@ -129,7 +130,7 @@ class ChatController extends Controller
         $chat->ChatRoom->update(["last_at"=> now()-> format("Y-m-d H:i:s.u")]);
 
         // NOTIFICAR AL SEGUNDO USUARIO Y HACER UN SUSH DE MENSAJE
-        
+        broadcast(new SendMessageChat($chat));
         //NOTIFICAR A NUESTRA SALA DE CHAT
         // NOTIFICAMOS A LA SALA DE CHAT DEL SEGUNDO USUARIO
 

@@ -27,24 +27,24 @@ class SendMessageChat implements ShouldBroadcastNow
 
     public function broadcastWith(){
 
-         $chater = $this->chat;
-        echo($chater);
+         $chat = $this->chat;
+        echo "En el broadcast with",$chat;
        
         return [
 
             //debe verificarse si es correcto que se introduzca aqui la variable chater
 
-            "id" => $this->$chater->id,
+            "id" => $this->$chat->id,
             "sender" => [
-                                "id" => $this->$chater -> FromUser -> id,
-                                "full_name" => $this->$chater-> FromUser->name.' '.$this->$chater->FromUser->surname,
-                                "avatar" =>$this->$chater->FromUser->avatar ? env("APP_URL")."storage/".$this->$chater->FromUser->avatar : NULL,
+                                "id" => $this->$chat -> FromUser -> id,
+                                "full_name" => $this->$chat-> FromUser->name.' '.$this->$chat->FromUser->surname,
+                                "avatar" =>$this->$chat->FromUser->avatar ? env("APP_URL")."storage/".$this->$chat->FromUser->avatar : NULL,
 
                             ],
-                            "message" => $this->$chater->message,
-                            "read_at" => $this->$chater->read_at,
-                            "time" => $this->$chater->created_at->diffForHummans(),
-                            "created_at" => $this->$chater -> created_at, 
+                            "message" => $this->$chat->message,
+                            "read_at" => $this->$chat->read_at,
+                            "time" => $this->$chat->created_at->diffForHummans(),
+                            "created_at" => $this->$chat -> created_at, 
         ];
     }
 
