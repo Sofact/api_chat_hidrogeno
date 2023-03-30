@@ -14,8 +14,11 @@ class AgendaController  extends Controller
     }
 
     public function getAllAgenda(){
-       return $agenda = DB::table('evento')->get();
-
+       $agenda = DB::table('evento')->get();
+       return response()->json([
+        'message' => 'Respuesta Ok',
+        'agenda' => $agenda
+        ], 201);
     }
 
 }
