@@ -27,24 +27,23 @@ class SendMessageChat implements ShouldBroadcastNow
 
     public function broadcastWith(){
 
-         $chat = $this->chat;
-        echo "En el broadcast with",$chat;
+     
        
         return [
 
             //debe verificarse si es correcto que se introduzca aqui la variable chater
 
-            "id" => $this->$chat->id,
+            "id" => $this->chat->id,
             "sender" => [
-                                "id" => $this->$chat -> FromUser -> id,
-                                "full_name" => $this->$chat-> FromUser->name.' '.$this->$chat->FromUser->surname,
-                                "avatar" =>$this->$chat->FromUser->avatar ? env("APP_URL")."storage/".$this->$chat->FromUser->avatar : NULL,
+                                "id" => $this->chat -> FromUser -> id,
+                                "full_name" => $this->chat-> FromUser->name.' '.$this->chat->FromUser->surname,
+                                "avatar" =>$this->chat->FromUser->avatar ? env("APP_URL")."storage/".$this->chat->FromUser->avatar : NULL,
 
                             ],
-                            "message" => $this->$chat->message,
-                            "read_at" => $this->$chat->read_at,
-                            "time" => $this->$chat->created_at->diffForHummans(),
-                            "created_at" => $this->$chat -> created_at, 
+                            "message" => $this->chat->message,
+                            "read_at" => $this->chat->read_at,
+                            "time" => $this->chat->created_at->diffForHumans(),
+                            "created_at" => $this->chat -> created_at, 
         ];
     }
 
@@ -55,9 +54,9 @@ class SendMessageChat implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        $chater = $this->chat;
+
         return [
-            new PrivateChannel('chat-room.'.$this->$chater->ChatRoom->uniqid)
+            new PrivateChannel('chat-room.'.$this->chat->ChatRoom->uniqid)
         ];
     }
 }
