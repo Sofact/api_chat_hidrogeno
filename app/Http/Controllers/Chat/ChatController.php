@@ -29,8 +29,9 @@ class ChatController extends Controller
                                     ->Wherein("second_user", [$request->to_user_id, auth('api')->user()->id])
                                     ->count();
 
-
+            
         if($isExistRooms > 0){
+
 
             $chatRoom = ChatRoom::whereIn("first_user", [$request->to_user_id, auth('api')->user()->id])
             ->Wherein("second_user", [$request->to_user_id, auth('api')->user()->id])
@@ -40,6 +41,8 @@ class ChatController extends Controller
             ->where('chat_room_id', $chatRoom->id)
             ->where('read_at', NULL)
             ->update(['read_at' => now()]);
+            
+    
 
             $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(10);
 
@@ -50,26 +53,30 @@ class ChatController extends Controller
             $data["user"]=[
                 
                     "id"=>$to_user->id,
-                    "full_name" => $to_user->name.' '.$to_user->surname,
+                    "full_name" => $to_user->name,
                     "avatar"=> $to_user->avatar ? env("APP_URL")."storage/".$to_user->avatar : NULL,
             ];
+    
 
             if (count($chats)> 0){
-                foreach($chats as $key =>$chats){
+                foreach($chats as $key =>$chat){
+                 //   echo "El valor del Chat en el forantes:::", $chat;
                     $data["messages"][] =[
-                            "id" => $chats->id,
+                            "id" => $chat->id,
                             "sender" => [
-                                "id" => $chats -> FromUser -> id,
-                                "full_name" => $chats-> FromUser->name,
-                                "avatar" => $chats->FromUser->avatar ? env("APP_URL")."storage/".$chats->FromUser->avatar : "non-avatar.png",
+                                "id" => $chat -> FromUser-> id,
+                                "full_name" => $chat-> FromUser->name,
+                                "avatar" => $chat->FromUser->avatar ? $chat->FromUser->avatar : "non-avatar.png",
 
                             ],
-                            "message" => $chats->message,
+                            
+                            "message" => $chat->message,
                             //fillw
-                            "read_at" => $chats->read_at,
-                            "time" => $chats->created_at->diffForHummans(),
-                            "created_at" => $chats -> created_at, 
+                            "read_at" => $chat->read_at,
+                            "time" => $chat->created_at->diffForHumans(),
+                            "created_at" => $chat -> created_at, 
                     ];
+              //      echo "El valor del Chat en el for:::", $chat;
                 }
             }else{
             $data["messages"] = [];
@@ -108,7 +115,7 @@ class ChatController extends Controller
             return response()->json($data);
         }
                         
-                        
+          echo "finalizo el metodo";              
     }
 
     public function sendMessageText(Request $request){

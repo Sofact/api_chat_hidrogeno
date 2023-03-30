@@ -5,6 +5,7 @@ namespace App\Models\Chat;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Chat extends Model
 {
