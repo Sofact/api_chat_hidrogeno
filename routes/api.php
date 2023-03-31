@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JWTController;
 use App\Http\Controllers\User\ProfileUserController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\Chat\ChatController;
 
 /*
@@ -30,6 +31,7 @@ Route::group(['middleware' => 'api'], function($router){
     Route::post('/profile', [JWTController::class, 'profile']);
     Route::get('/users/contact', [ProfileUserController::class, 'contactUsers']);
     Route::get('/agenda', [AgendaController::class, 'getAllAgenda']);
+    Route::get('/persona', [PersonaController::class, 'getAllPersona']);
     Route::post('/start-chat', [ChatController::class, 'startChat']);
     
 });

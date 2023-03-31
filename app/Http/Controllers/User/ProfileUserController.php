@@ -12,7 +12,7 @@ class ProfileUserController extends Controller
 {
     public function __construct(){
         
-        $this->middleware('auth:api', ['except' => 'contactUsers']);
+        $this->middleware('auth:api');
     }
 
     public function profile_user(Request $request){
