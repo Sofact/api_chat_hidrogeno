@@ -7,6 +7,7 @@ use App\Http\Controllers\User\ProfileUserController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\Chat\ChatController;
+use App\Http\Controllers\BroadcastController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,9 @@ Route::group(['middleware' => 'api'], function($router){
     Route::get('/agenda', [AgendaController::class, 'getAllAgenda']);
     Route::get('/persona', [PersonaController::class, 'getAllPersona']);
     Route::post('/start-chat', [ChatController::class, 'startChat']);
+    Route::post('/broadcasting/autho', [BroadcastController::class, 'authenticate']);
+    
+   
     
 });
 
@@ -44,3 +48,6 @@ Route::group(['prefix' => 'chat'], function($router){
 
 });
 
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});

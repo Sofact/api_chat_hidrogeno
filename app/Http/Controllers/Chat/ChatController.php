@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Chat;
 
+use App\Events\RefreshMyChatRoom;
 use App\Events\SendMessageChat;
 use App\Http\Resources\Chat\ChatGResource;
 use App\Http\Controllers\Controller;
@@ -20,6 +21,7 @@ class ChatController extends Controller
     }
 
     public function startChat(Request $request){
+
     
         date_default_timezone_set("America/Bogota");
 
@@ -116,7 +118,7 @@ class ChatController extends Controller
             return response()->json($data);
         }
                         
-          echo "finalizo el metodo";              
+           
     }
 
     public function sendMessageText(Request $request){
@@ -129,8 +131,12 @@ class ChatController extends Controller
 
         $chat->ChatRoom->update(["last_at"=> now()-> format("Y-m-d H:i:s.u")]);
 
-        // NOTIFICAR AL SEGUNDO USUARIO Y HACER UN SUSH DE MENSAJE
-        broadcast(new SendMessageChat($chat));
+        // NOTIFICAR AL SEGUNDO USUARIO Y HACER UN pUSH DE MENSAJE
+        broadcast (new SendMessageChat($chat));
+        broadcast (new RefreshMyChatRoom($request->to_user_id));
+        broadcast (new RefreshMyChatRoom(auth('api')->user()->id));
+      //  broadcast(new SendMessageChat($chat));
+     //   broadcast(new RefreshMyChatRoom($chat->Chatrom));
         //NOTIFICAR A NUESTRA SALA DE CHAT
         // NOTIFICAMOS A LA SALA DE CHAT DEL SEGUNDO USUARIO
 
@@ -143,7 +149,10 @@ class ChatController extends Controller
                 ->orderBy("last_at", "desc")
                 ->get();
 
+
        return response()->json([
+
+       
         
             "chatrooms" => $chatRooms->map(function($item){
                 return ChatGResource::make($item);

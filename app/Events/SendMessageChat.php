@@ -2,11 +2,8 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -31,12 +28,10 @@ class SendMessageChat implements ShouldBroadcastNow
        
         return [
 
-            //debe verificarse si es correcto que se introduzca aqui la variable chater
-
             "id" => $this->chat->id,
             "sender" => [
                                 "id" => $this->chat -> FromUser -> id,
-                                "full_name" => $this->chat-> FromUser->name.' '.$this->chat->FromUser->surname,
+                                "full_name" => $this->chat-> FromUser->name,
                                 "avatar" =>$this->chat->FromUser->avatar ? env("APP_URL")."storage/".$this->chat->FromUser->avatar : NULL,
 
                             ],
@@ -56,7 +51,7 @@ class SendMessageChat implements ShouldBroadcastNow
     {
 
         return [
-            new PrivateChannel('chat-room.'.$this->chat->ChatRoom->uniqid)
+            new PrivateChannel('chat.room.'.$this->chat->ChatRoom->uniqd)
         ];
     }
 }

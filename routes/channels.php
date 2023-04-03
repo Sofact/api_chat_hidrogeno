@@ -1,5 +1,6 @@
 <?php
 
+use BeyondCode\LaravelWebSockets\WebSockets\Channels\PrivateChannel;
 use Illuminate\Support\Facades\Broadcast;
 use app\Models\Chat\ChatRoom;
 
@@ -14,11 +15,11 @@ use app\Models\Chat\ChatRoom;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('chat-room.{uniqd}', function ($user, $uniqd) {
+Broadcast::channel('chat.room.{uniqd}', function ($user, $uniqd) {
 
     $chatroom = ChatRoom::where("uniqd", $uniqd)->first();
     if($chatroom->chat_group_id){
@@ -28,9 +29,9 @@ Broadcast::channel('chat-room.{uniqd}', function ($user, $uniqd) {
         return (int) $user->id === (int) $chatroom->first_user || (int)$user->id === (int) $chatroom->second_user;
     }
 
-
 });
 
 Broadcast::channel('chat.refresh.room.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
+
 });

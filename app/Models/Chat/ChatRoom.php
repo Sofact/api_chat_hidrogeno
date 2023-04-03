@@ -5,6 +5,7 @@ namespace App\Models\Chat;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class ChatRoom extends Model
 {
@@ -35,7 +36,7 @@ class ChatRoom extends Model
         return $this->belongsTo(User::class, "first_user");
     }
 
-    public function SecondtUser(){
+    public function SecondUser(){
     
         return $this->belongsTo(User::class, "second_user");
     }
