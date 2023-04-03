@@ -16,7 +16,7 @@ class PersonaController extends Controller
        $persona = DB::table('persona')->get();
        return response()->json([
         'message' => 'Respuesta Ok',
-        'pesona' => $persona
+        'persona' => $persona
         ], 201);
     }
 }
