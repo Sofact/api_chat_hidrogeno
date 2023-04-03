@@ -10,8 +10,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use app\Models\Chat\ChatRoom;
-use app\Http\Resources\Chat\ChatGResource;
+use App\Models\Chat\ChatRoom;
+use App\Http\Resources\Chat\ChatGResource;
 
 class RefreshMyChatRoom implements ShouldBroadcastNow
 {
@@ -48,7 +48,7 @@ class RefreshMyChatRoom implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        //validar si es correcta la utilizacion del to_user_id
+     
         
         return [
             new PrivateChannel('chat.refresh.room.'.$this->to_user_id)
