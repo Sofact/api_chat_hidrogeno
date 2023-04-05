@@ -6,6 +6,7 @@ use App\Events\RefreshMyChatRoom;
 use App\Events\SendMessageChat;
 use App\Http\Resources\Chat\ChatGResource;
 use App\Http\Controllers\Controller;
+use App\Models\Chat\ChatGroup;
 use Illuminate\Http\Request;
 use App\Models\Chat\ChatRoom;
 use App\Models\Chat\Chat;
@@ -18,6 +19,19 @@ class ChatController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
+    }
+
+
+    public function startGroupChat(Request $request){
+    
+        date_default_timezone_set("America/Bogota");
+
+        $chatGroup = ChatGroup::create([
+                
+            "name" =>  $request->nombreGrupo,
+            "uniqd"=> uniqid(),
+    ]);
+
     }
 
     public function startChat(Request $request){
@@ -52,7 +66,16 @@ class ChatController extends Controller
             $data = [];
             $data["room_id"] = $chatRoom->id;
             $data["room_uniqd"] = $chatRoom->uniqd;
+
+        
+
             $to_user = User::find($request->to_user_id);
+            
+            if(!$to_user){
+                $to_user = ChatGroup::find($request->to_user_id);
+
+           }
+
             $data["user"]=[
                 
                     "id"=>$to_user->id,
@@ -103,6 +126,12 @@ class ChatController extends Controller
             $data["room_id"] = $chatroom->id;
             $data["room_uniqd"] = $chatroom->uniqd;
             $to_user = User::find($request->to_user_id);
+
+            if(!$to_user){
+                $to_user = ChatGroup::find($request->to_user_id);
+
+           }
+
             $data["user"]=[
                 
                     "id"=>$to_user->id,

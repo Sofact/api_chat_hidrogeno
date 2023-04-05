@@ -16,14 +16,14 @@ class BroadcastController extends Controller
      */
     public function authenticate(Request $request)
     {
-        echo "solo echo";
+    //    echo "solo echo";
        // echo "el request antes del iof el auth:::", $request;
         if ($request->hasSession()) {
             $request->session()->reflash();
            
         }
 
-        return Broadcast::auth($request);
+        return Broadcast::auth($request) ;
     }
 
     

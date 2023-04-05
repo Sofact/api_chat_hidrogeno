@@ -11,8 +11,10 @@ class ChatGroup extends Model
     use SoftDeletes;
     protected $fillable = [
     
+        "id",
         "name",
-        "uniqd"
+        "uniqd",
+        "avatar"
 
     ];
 

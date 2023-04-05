@@ -19,4 +19,19 @@ class PersonaController extends Controller
         'persona' => $persona
         ], 201);
     }
+
+    public function getPersonaById($per_id){
+    
+        $persona = Persona::find($per_id);
+
+        if(!$persona) return response()->json(['message' => 'No user found'], 404);
+
+        return response()->json([
+            'message' => 'Persona Ok',
+            'code' => 200,
+            'error' => false,
+            'results' => $persona
+        ], 200);
+
+    }
 }

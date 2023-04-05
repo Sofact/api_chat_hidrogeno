@@ -51,7 +51,7 @@ class RefreshMyChatRoom implements ShouldBroadcastNow
      
         
         return [
-            new PrivateChannel('chat.refresh.room.'.$this->to_user_id)
+            new Channel('chat.refresh.room.'.$this->to_user_id)
         ];
     }
 }

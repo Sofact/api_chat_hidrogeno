@@ -34,7 +34,7 @@ class ChatGResource extends JsonResource
                      "group_chat" => $this->resource ->chat_group_id ?[
                         "id" => $this->resource->ChatGroup->id,
                         "full_name" => $this->resource->ChatGroup->name,
-                        "avatar" => NULL,
+                        "avatar" =>  $this->resource->ChatGroup->avatar ? $this->resource->ChatGroup->avatar:  "non-avatar.png",
                         "last_message" => $this->resource->last_message,
                         "last_message_is_my" => $this->resource->last_message_user ? $this->resource->last_message_user  === auth('api')->user()->id:  "non-avatar.png",
                         "last_time" => $this->resource -> last_time_created_at,
