@@ -9,6 +9,7 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\BroadcastController;
 use App\Http\Controllers\EventoPersonaController;
+use App\Http\Controllers\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,7 @@ Route::group(['middleware' => 'api'], function($router){
     Route::get('/users/contact', [ProfileUserController::class, 'contactUsers']);
     Route::get('/agenda', [AgendaController::class, 'getAllAgenda']);
     Route::get('/persona', [PersonaController::class, 'getAllPersona']);
+    Route::get('/grupo', [GroupController::class, 'getAllGropus']);
     Route::get('/personaById/{per_id}', [PersonaController::class, 'getPersonaById']);
     Route::get('/evento-persona', [EventoPersonaController::class, 'getEventoPersona']);
   //  Route::get('/evento-personaid/{eve_id}', [EventoPersonaController::class, 'getEventoPersonaByeventId']);

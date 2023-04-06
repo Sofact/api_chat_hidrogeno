@@ -12,6 +12,7 @@ class ChatRoom extends Model
     use SoftDeletes;
     protected $fillable = [
     
+        "id",
         "first_user",
         "second_user",
         "chat_group_id",

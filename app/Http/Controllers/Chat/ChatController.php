@@ -32,7 +32,21 @@ class ChatController extends Controller
             "uniqd"=> uniqid(),
     ]);
 
+    $idgrupo = ChatGroup::Where("name","=", [$request->nombreGrupo])
+                                ->first();
+
+    $chatroom = ChatRoom::create([
+                
+        "first_user" => auth()->user()->id,
+        "second_user" => 0,
+        "chat_group_id" => $idgrupo->id,
+        "last_at" => now()->format("Y-m-d H:i:s.u"),
+        "uniqd"=> uniqid(),
+]);
+
     }
+
+  
 
     public function startChat(Request $request){
 
@@ -42,26 +56,52 @@ class ChatController extends Controller
         if($request->to_user_id == auth('api')->user()->id){
             return response()->json(["error"=> "No puedes iniciar un chat con tigo mismo"]);
         }
-        $isExistRooms = ChatRoom::whereIn("first_user", [$request->to_user_id, auth('api')->user()->id])
-                                    ->Wherein("second_user", [$request->to_user_id, auth('api')->user()->id])
-                                    ->count();
 
+        $isExistRooms = ChatRoom::whereIn("first_user", [$request->to_user_id, auth('api')->user()->id])
+                        ->Wherein("chat_group_id", [$request->to_user_id])
+                        ->count();
+        if($isExistRooms == 0){
+        $isExistRooms = ChatRoom::whereIn("first_user", [$request->to_user_id, auth('api')->user()->id])
+                        ->Wherein("second_user", [$request->to_user_id, auth('api')->user()->id])
+                        ->count();
+        }
+                //        echo "Existe????::::", $isExistRooms, "after exist";
             
         if($isExistRooms > 0){
 
+            $isGroup = ChatRoom::Wherein("chat_group_id", [$request->to_user_id])
+                                ->count();
+
+            if($isGroup){
+
+                $chatRoom = ChatRoom::whereIn("first_user", [$request->to_user_id, auth('api')->user()->id])
+                                ->Wherein("chat_group_id", [$request->to_user_id, auth('api')->user()->id])
+                                ->first();
+
+                Chat::where('from_user_id', $request->to_user_id)
+                    ->where('chat_group_id', $request->to_user_id)
+                    ->where('read_at', NULL)
+                    ->update(['read_at' => now()]);
+            
+            $chats = Chat::where("chat_group_id",  $request->to_user_id)->orderBy("created_at", "desc")->paginate(10);
+                
+            
+            }else{
 
             $chatRoom = ChatRoom::whereIn("first_user", [$request->to_user_id, auth('api')->user()->id])
-            ->Wherein("second_user", [$request->to_user_id, auth('api')->user()->id])
-            ->first();
+                                ->Wherein("second_user", [$request->to_user_id, auth('api')->user()->id])
+                                ->first();
 
             Chat::where('from_user_id', $request->to_user_id)
-            ->where('chat_room_id', $chatRoom->id)
-            ->where('read_at', NULL)
-            ->update(['read_at' => now()]);
-            
-    
+                ->where('chat_room_id', $chatRoom->id)
+                ->where('read_at', NULL)
+                ->update(['read_at' => now()]);
 
-            $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(10);
+                $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(10);
+            
+                }
+
+           
 
             $data = [];
             $data["room_id"] = $chatRoom->id;
@@ -113,6 +153,7 @@ class ChatController extends Controller
             return response()->json($data);
         }else{
         
+          //  echo "en el else????::::", $isExistRooms, "after exist";
             $chatroom = ChatRoom::create([
                 
                     "first_user" => auth()->user()->id,
@@ -154,6 +195,15 @@ class ChatController extends Controller
 
     
         date_default_timezone_set("America/Bogota");
+
+        $isGroup = ChatRoom::Wherein("id", [$request->chat_room_id])
+                           // ->WhereNotNull("chat_group_id")
+                            ->first();
+        
+        if($isGroup){
+            $request->request->add(["chat_group_id" => $isGroup->chat_group_id]);
+        }                            
+       
 
         $request->request->add(["from_user_id" => auth('api')->user()->id]);
         $chat = Chat::create($request->all());
