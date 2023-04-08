@@ -10,6 +10,7 @@ use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\BroadcastController;
 use App\Http\Controllers\EventoPersonaController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\SponsorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +43,7 @@ Route::group(['middleware' => 'api'], function($router){
     Route::post('/start-chat', [ChatController::class, 'startChat']);
     Route::post('/chat-grupal', [ChatController::class, 'startGroupChat']);
     Route::post('/broadcasting/autho', [BroadcastController::class, 'authenticate']);
-    
+    Route::get('/sponsor', [SponsorController::class, 'getAllSponsor']);
    
     
 });

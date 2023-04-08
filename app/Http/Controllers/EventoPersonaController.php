@@ -19,7 +19,7 @@ class EventoPersonaController extends Controller
        $eventoPersona = DB::table('vista_evento_persona')->get();
        return response()->json([
         'message' => 'Respuesta Ok',
-        'evento-persona' => $eventoPersona
+        'eventopersona' => $eventoPersona
         ], 201);
     }
 
@@ -27,7 +27,7 @@ class EventoPersonaController extends Controller
         $eventoPersona = EventoPersona::find($eve_id);
         return response()->json([
          'message' => 'Respuesta Ok',
-         'evento-persona' => $eventoPersona
+         'eventopersona' => $eventoPersona
          ], 201);
      }
 
