@@ -13,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Chat\ChatRoom;
 use App\Http\Resources\Chat\ChatGResource;
 
-class RefreshMyChatRoom implements ShouldBroadcastNow
+class RefreshMyChatRoom implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $to_user_id;
@@ -27,16 +27,47 @@ class RefreshMyChatRoom implements ShouldBroadcastNow
         //
     }
 
-    public function broadcastWith(){
-        
-        $chatRooms = ChatRoom::where("first_user",  $this->to_user_id)->orWhere("second_user",  $this->to_user_id)
-                                ->orderBy("last_at", "desc")
-                                ->get();
+    public function broadcastWith()
+    {
+        $chatrooms = ChatRoom::where("first_user", $this->to_user_id)->orWhere("second_user", $this->to_user_id)
+                               ->orderBy("last_at","desc")
+                               ->get();
 
+        date_default_timezone_set("America/Lima");
         return [
-            "chatrooms" => $chatRooms->map(function($item){
-                return ChatGResource::make($item);
-               
+            "chatrooms" => $chatrooms->map(function($item){
+                return [
+                    "friend_first" => $item->first_user != $this->to_user_id ?
+                    [
+                        "id" => $item->FirstUser->id,
+                        "full_name" => $item->FirstUser->name.' '.$item->FirstUser->surname,
+                        "avatar" => $item->FirstUser->avatar ? $this->resource->FirstUser->usr_avatar:  "non-avatar.png",
+                    ] : NULL,
+                    "friend_second" => $item->second_user ?
+                        $item->second_user != $this->to_user_id ?
+                        [
+                            "id" => $item->SecondUser->id,
+                            "full_name" => $item->SecondUser->name.' '.$item->SecondUser->surname,
+                            "avatar" => $item->SecondUser->avatar ? $this->resource->SecondUser->usr_avatar:  "non-avatar.png",
+                        ] : NULL
+                    : NULL,
+                    "group_chat" => $item->chat_group_id ? [
+                        "id" => $item->ChatGroup->id,
+                        "name" => $item->ChatGroup->name,
+                        "avatar" => NULL,
+
+                        "last_message" => $item->ChatGroup->last_message,
+                        "last_message_is_my" => $item->ChatGroup->last_message_user ?  $item->ChatGroup->last_message_user === $this->to_user_id : NULL,
+                        "last_time" => $item->ChatGroup->last_time_created_at,
+                        "count_message" => $item->ChatGroup->getCountMessages($this->to_user_id),
+                    ] : NULL,
+                    "uniqd" => $item->uniqd,
+                    "is_active" => false,
+                    "last_message" => $item->last_message,
+                    "last_message_is_my" => $item->last_message_user ?  $item->last_message_user === $this->to_user_id : NULL,
+                    "last_time" => $item->last_time_created_at,
+                    "count_message" => $item->getCountMessages($this->to_user_id),
+                ];
             }),
         ];
     }
@@ -46,12 +77,8 @@ class RefreshMyChatRoom implements ShouldBroadcastNow
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-     
-        
-        return [
-            new Channel('chat.refresh.room.'.$this->to_user_id)
-        ];
+        return new PrivateChannel('chat.refresh.room.'.$this->to_user_id);
     }
 }

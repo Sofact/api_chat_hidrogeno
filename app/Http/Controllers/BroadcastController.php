@@ -37,9 +37,7 @@ class BroadcastController extends Controller
      */
     public function authenticateUser(Request $request)
     {
-        echo "solo el texto";
-        echo "el request antes del iof el authusuario:::", $request;
-        if ($request->hasSession()) {
+              if ($request->hasSession()) {
             $request->session()->reflash();
         }
 

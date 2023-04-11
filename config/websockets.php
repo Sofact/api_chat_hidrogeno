@@ -27,8 +27,6 @@ return [
             'name' => env('APP_NAME'),
             'key' => env('PUSHER_APP_KEY'),
             'secret' => env('PUSHER_APP_SECRET'),
-            'path' => env('PUSHER_APP_PATH'),
-            'capacity' => null,
             'enable_client_messages' => false,
             'enable_statistics' => true,
         ],
@@ -68,7 +66,7 @@ return [
      * the chance to add your own middleware to this list or change any of
      * the existing middleware. Or, you can simply stick with this list.
      */
-    'middleware' => [ 'api',Authorize::class,],
+    'middleware' => [ 'web',Authorize::class,],
 
     'statistics' => [
         /*
