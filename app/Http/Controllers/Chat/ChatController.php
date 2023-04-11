@@ -177,7 +177,7 @@ class ChatController extends Controller
                 
                     "id"=>$to_user->id,
                     "full_name" => $to_user->name,
-                    "avatar"=> $to_user->usr_avatar ? env("APP_URL")."storage/".$to_user->usr_avatar : "non-avatar.png",
+                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "non-avatar.png",
             ];
 
             $data["messages"] = [];

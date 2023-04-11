@@ -41,20 +41,20 @@ class RefreshMyChatRoom implements ShouldBroadcast
                     [
                         "id" => $item->FirstUser->id,
                         "full_name" => $item->FirstUser->name.' '.$item->FirstUser->surname,
-                        "avatar" => $item->FirstUser->avatar ? $this->resource->FirstUser->usr_avatar:  "non-avatar.png",
+                        "avatar" => $item->FirstUser->avatar ? $item->FirstUser->usr_avatar:  "non-avatar.png",
                     ] : NULL,
                     "friend_second" => $item->second_user ?
                         $item->second_user != $this->to_user_id ?
                         [
                             "id" => $item->SecondUser->id,
                             "full_name" => $item->SecondUser->name.' '.$item->SecondUser->surname,
-                            "avatar" => $item->SecondUser->avatar ? $this->resource->SecondUser->usr_avatar:  "non-avatar.png",
+                            "avatar" => $item->SecondUser->avatar ? $item->SecondUser->usr_avatar:  "non-avatar.png",
                         ] : NULL
                     : NULL,
                     "group_chat" => $item->chat_group_id ? [
                         "id" => $item->ChatGroup->id,
                         "name" => $item->ChatGroup->name,
-                        "avatar" => NULL,
+                        "avatar" => "non-avatar.png",
 
                         "last_message" => $item->ChatGroup->last_message,
                         "last_message_is_my" => $item->ChatGroup->last_message_user ?  $item->ChatGroup->last_message_user === $this->to_user_id : NULL,

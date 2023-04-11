@@ -2,7 +2,9 @@
 
 namespace App\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -12,46 +14,40 @@ class SendMessageChat implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $chat;
-
     /**
      * Create a new event instance.
+     *
+     * @return void
      */
     public function __construct($chat)
     {
         $this->chat = $chat;
-        //
     }
 
-    public function broadcastWith(){
-
-     
-       
+    public function broadcastWith()
+    {
         return [
-
             "id" => $this->chat->id,
             "sender" => [
-                                "id" => $this->chat -> FromUser -> id,
-                                "full_name" => $this->chat-> FromUser->name,
-                                "avatar" =>$this->chat->FromUser->avatar ? env("APP_URL")."storage/".$this->chat->FromUser->avatar : NULL,
-
-                            ],
-                            "message" => $this->chat->message,
-                            "read_at" => $this->chat->read_at,
-                            "time" => $this->chat->created_at->diffForHumans(),
-                            "created_at" => $this->chat -> created_at, 
+                "id" => $this->chat->FromUser->id,
+                "full_name" => $this->chat->FromUser->name,
+                "avatar" => $this->chat->FromUser->avatar  ? $this->chat->FromUser->avatar:  "non-avatar.png",
+            ],
+            "message" => $this->chat->message,
+            // "filw"
+            
+            "read_at" => $this->chat->read_at,
+            "time" => $this->chat->created_at->diffForHumans(),
+            "created_at" => $this->chat->created_at,
         ];
     }
-
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-
-        return [
-            new PrivateChannel('chat.room.'.$this->chat->ChatRoom->uniqd)
-        ];
+        return new Channel('chat.room.'.$this->chat->ChatRoom->uniqd);
     }
 }

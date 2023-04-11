@@ -40,7 +40,7 @@ Route::group(['middleware' => 'api'], function($router){
     Route::get('/personaById/{per_id}', [PersonaController::class, 'getPersonaById']);
     Route::get('/evento-persona', [EventoPersonaController::class, 'getEventoPersona']);
   //  Route::get('/evento-personaid/{eve_id}', [EventoPersonaController::class, 'getEventoPersonaByeventId']);
-    Route::post('/start-chat', [ChatController::class, 'startChat']);
+  //  Route::post('/start-chat', [ChatController::class, 'startChat']);
     Route::post('/chat-grupal', [ChatController::class, 'startGroupChat']);
     Route::post('/broadcasting/autho', [BroadcastController::class, 'authenticate']);
     Route::get('/sponsor', [SponsorController::class, 'getAllSponsor']);
@@ -50,7 +50,7 @@ Route::group(['middleware' => 'api'], function($router){
 
 Route::group(['prefix' => 'chat'], function($router){
 
-   // Route::post('/start-chat', [ChatController::class, 'startChat']);
+    Route::post('/start-chat', [ChatController::class, 'startChat']);
     Route::post('/list-my-chat-room', [ChatController::class, 'listMyChats']);
     Route::post('/send-message-txt', [ChatController::class, 'sendMessageText']);
 
