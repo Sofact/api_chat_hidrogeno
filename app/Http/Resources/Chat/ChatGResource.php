@@ -31,7 +31,7 @@ class ChatGResource extends JsonResource
                             ] :NULL
                         
                         :NULL,
-                     "group_chat" => $this->resource ->chat_group_id ?[
+                     "group_chat" => $this->resource ->chat_group_id ? [
                         "id" => $this->resource->ChatGroup->id,
                         "full_name" => $this->resource->ChatGroup->name,
                         "avatar" =>  $this->resource->ChatGroup->avatar ? $this->resource->ChatGroup->avatar:  "non-avatar.png",

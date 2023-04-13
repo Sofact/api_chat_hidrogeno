@@ -30,6 +30,7 @@ class ChatController extends Controller
                 
             "name" =>  $request->nombreGrupo,
             "uniqd"=> uniqid(),
+            "avatar"=>  "non-avatar.png",
     ]);
 
     $idgrupo = ChatGroup::Where("name","=", [$request->nombreGrupo])
@@ -120,7 +121,7 @@ class ChatController extends Controller
                 
                     "id"=>$to_user->id,
                     "full_name" => $to_user->name,
-                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : NULL,
+                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "non-avatar.png",
             ];
     
 
@@ -261,7 +262,7 @@ class ChatController extends Controller
                 
                     "id"=>$to_user->id,
                     "full_name" => $to_user->name,
-                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : NULL,
+                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "non-avatar.png",
             ];
     
 
