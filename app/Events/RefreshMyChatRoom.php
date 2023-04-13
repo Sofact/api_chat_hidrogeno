@@ -29,6 +29,10 @@ class RefreshMyChatRoom implements ShouldBroadcast
 
     public function broadcastWith()
     {
+
+  
+
+        
         $chatrooms = ChatRoom::where("first_user", $this->to_user_id)->orWhere("second_user", $this->to_user_id)
                                ->orderBy("last_at","desc")
                                ->get();
