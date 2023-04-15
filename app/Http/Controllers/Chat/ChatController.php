@@ -84,7 +84,7 @@ class ChatController extends Controller
                     ->where('read_at', NULL)
                     ->update(['read_at' => now()]);
             
-            $chats = Chat::where("chat_group_id",  $request->to_user_id)->orderBy("created_at", "desc")->paginate(50);
+            $chats = Chat::where("chat_group_id",  $request->to_user_id)->orderBy("created_at", "desc")->paginate(6);
                 
             
             }else{
@@ -98,7 +98,7 @@ class ChatController extends Controller
                 ->where('read_at', NULL)
                 ->update(['read_at' => now()]);
 
-                $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(50);
+                $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(6);
             
                 }
 
@@ -225,7 +225,7 @@ class ChatController extends Controller
                     ->where('read_at', NULL)
                     ->update(['read_at' => now()]);
             
-            $chats = Chat::where("chat_group_id",  $request->to_user_id)->orderBy("created_at", "desc")->paginate(50);
+            $chats = Chat::where("chat_group_id",  $request->to_user_id)->orderBy("created_at", "desc")->paginate(6);
                 
             
             }else{
@@ -239,7 +239,7 @@ class ChatController extends Controller
                 ->where('read_at', NULL)
                 ->update(['read_at' => now()]);
 
-                $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(50);
+                $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(6);
             
                 }
 
@@ -333,11 +333,10 @@ class ChatController extends Controller
                         
            
     }
-
     public function chatRoomPaginate(Request $request)
     {
         $chats = [];
-        $chats = Chat::where("chat_room_id", $request->chat_room_id)->orderBy("created_at","desc")->paginate(50);
+        $chats = Chat::where("chat_room_id", $request->chat_room_id)->orderBy("created_at","desc")->paginate(6);
         $data = [];
         if(count($chats) > 0){
             foreach ($chats as $key => $chat) {
@@ -346,20 +345,11 @@ class ChatController extends Controller
                     "sender" => [
                         "id" => $chat->FromUser->id,
                         "full_name" => $chat->FromUser->name.' '.$chat->FromUser->surnme,
-                        "avatar" => $chat->FromUser->avatar ? env("APP_URL")."storage/".$chat->FromUser->avatar : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                        "avatar" => $chat->FromUser->avatar ? $chat->FromUser->avatar :  "non-avatar.png",
                     ],
                     "message" => $chat->message,
                     // "filw"
-                    "file" => $chat->ChatFile ? [
-                        "id" => $chat->ChatFile->id,
-                        "file_names" => $chat->ChatFile->file_names,
-                        "resolution" => $chat->ChatFile->resolution,
-                        "type" => $chat->ChatFile->type,
-                        "size" => $chat->ChatFile->size,
-                        "file" => env("APP_URL")."storage/".$chat->ChatFile->file,
-                        "uniqd" => $chat->ChatFile->uniqd,
-                        "created_at" =>  $chat->ChatFile->created_at->format("Y-m-d h:i A"),
-                    ]: null,
+                   
                     "read_at" => $chat->read_at,
                     "time" => $chat->created_at->diffForHumans(),
                     "created_at" => $chat->created_at,
@@ -371,14 +361,13 @@ class ChatController extends Controller
         $data["last_page"] = $chats->lastPage();
         return response()->json($data);
     }
-
     public function sendMessageText(Request $request){
 
     
         date_default_timezone_set("America/Bogota");
 
         $isGroup = ChatRoom::Wherein("id", [$request->chat_room_id])
-                           // ->WhereNotNull("chat_group_id")
+                            ->WhereNotNull("chat_group_id")
                             ->first();
         
         if($isGroup){
