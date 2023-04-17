@@ -84,7 +84,7 @@ class ChatController extends Controller
                     ->where('read_at', NULL)
                     ->update(['read_at' => now()]);
             
-            $chats = Chat::where("chat_group_id",  $request->to_user_id)->orderBy("created_at", "desc")->paginate(6);
+            $chats = Chat::where("chat_group_id",  $request->to_user_id)->orderBy("created_at", "desc")->paginate(10);
                 
             
             }else{
@@ -98,7 +98,7 @@ class ChatController extends Controller
                 ->where('read_at', NULL)
                 ->update(['read_at' => now()]);
 
-                $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(6);
+                $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(10);
             
                 }
 
@@ -225,7 +225,7 @@ class ChatController extends Controller
                     ->where('read_at', NULL)
                     ->update(['read_at' => now()]);
             
-            $chats = Chat::where("chat_group_id",  $request->to_user_id)->orderBy("created_at", "desc")->paginate(6);
+            $chats = Chat::where("chat_group_id",  $request->to_user_id)->orderBy("created_at", "desc")->paginate(10);
                 
             
             }else{
@@ -239,7 +239,7 @@ class ChatController extends Controller
                 ->where('read_at', NULL)
                 ->update(['read_at' => now()]);
 
-                $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(6);
+                $chats = Chat::where("chat_room_id", $chatRoom->id)->orderBy("created_at", "desc")->paginate(10);
             
                 }
 
@@ -336,7 +336,7 @@ class ChatController extends Controller
     public function chatRoomPaginate(Request $request)
     {
         $chats = [];
-        $chats = Chat::where("chat_room_id", $request->chat_room_id)->orderBy("created_at","desc")->paginate(6);
+        $chats = Chat::where("chat_room_id", $request->chat_room_id)->orderBy("created_at","desc")->paginate(10);
         $data = [];
         if(count($chats) > 0){
             foreach ($chats as $key => $chat) {
