@@ -44,9 +44,12 @@ Route::group(['middleware' => 'api'], function($router){
     Route::post('/chat-grupal', [ChatController::class, 'startGroupChat']);
     Route::post('/broadcasting/autho', [BroadcastController::class, 'authenticate']);
     Route::get('/sponsor', [SponsorController::class, 'getAllSponsor']);
+    Route::post('/profile-user',  [ProfileUserController::class, 'profile_user']);
    
     
 });
+
+
 
 Route::group(['prefix' => 'chat'], function($router){
 

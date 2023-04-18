@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 
 use App\Http\Resources\User\ProfileUserGeneralResource;
@@ -15,24 +16,24 @@ class ProfileUserController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function profile_user(Request $request){
-    
-        echo("funciona el profile user");
-    /*
+    public function profile_user(Request $request)
+    {
+        //echo "Ingreso al profile", $request;
         $user = auth('api')->user();
-        $userModel = User::findOrFail($user->id);
-        if($request->hasFile("imagen")){
+        $userModel =  User::findOrFail($user->id);
+      //  echo "Ingreso al profile", $userModel;
+        if($request->hasFile("imagen"))
+        {
             if($userModel->avatar){
                 Storage::delete($userModel->avatar);
             }
-            $path = Storage::putFile('users', $request->file("imagen"));
-            $request->request->add(["avatar"=> $path]);
-
+            $path = Storage::putFile('users',$request->file("imagen"));
+            $request->request->add(["usr_avatar" => $path]);
         }
         $userModel->update($request->all());
-        return response()->json(["message"=> 200, "user"=> ProfileUserGeneralResource::make($userModel)]);
-*/
+        return response()->json(["message"=> 200, "user" => ProfileUserGeneralResource::make($userModel)]);
     }
+
 
     public function contactUsers(){
 
