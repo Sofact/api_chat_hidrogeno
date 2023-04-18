@@ -31,7 +31,7 @@ class RefreshMyChatRoom implements ShouldBroadcast
     {
 
       //  echo "Ref:", $this->to_user_id;
-  /*
+  
         $isGroup = ChatRoom::Where("chat_group_id", $this->to_user_id)
                                     ->count();
         
@@ -41,13 +41,13 @@ class RefreshMyChatRoom implements ShouldBroadcast
                                ->orderBy("last_at","desc")
                                ->get();
         }else{
-        */
+        
         $chatrooms = ChatRoom::where("first_user", $this->to_user_id)
                                     ->orWhere("second_user", $this->to_user_id)
                                     ->orWhere("chat_group_id", $this->to_user_id)
                                ->orderBy("last_at","desc")
                                ->get();
-       // }
+        }
        
         date_default_timezone_set("America/Lima");
         return [
