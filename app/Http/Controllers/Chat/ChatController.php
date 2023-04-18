@@ -45,11 +45,12 @@ class ChatController extends Controller
         "uniqd"=> uniqid(),
 ]);
 
-    }
+    } 
 
   
 
     public function startChat(Request $request){
+        //modificacion
 
     
         date_default_timezone_set("America/Bogota");
