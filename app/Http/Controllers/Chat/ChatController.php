@@ -52,6 +52,7 @@ class ChatController extends Controller
     public function startChat(Request $request){
         //modificacion
 
+        $isGroup=0;
     
         date_default_timezone_set("America/Bogota");
 
@@ -74,7 +75,9 @@ class ChatController extends Controller
             $isGroup = ChatRoom::Wherein("chat_group_id", [$request->to_user_id])
                                 ->count();
 
-            if($isGroup){
+           
+
+            if($isGroup>0){
 
                 $chatRoom = ChatRoom::whereIn("first_user", [$request->to_user_id, auth('api')->user()->id])
                                 ->Wherein("chat_group_id", [$request->to_user_id, auth('api')->user()->id])
@@ -154,6 +157,7 @@ class ChatController extends Controller
             $data["last_page"] = $chats->lastPage();
             return response()->json($data);
         }else{
+
         
           //  echo "en el else????::::", $isExistRooms, "after exist";
             $chatroom = ChatRoom::create([
@@ -163,7 +167,7 @@ class ChatController extends Controller
                     "last_at" => now()->format("Y-m-d H:i:s.u"),
                     "uniqd"=> uniqid(),
             ]);
-
+        
             $data = [];
             $data["room_id"] = $chatroom->id;
             $data["room_id"] = $chatroom->id;
