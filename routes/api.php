@@ -45,8 +45,6 @@ Route::group(['middleware' => 'api'], function($router){
     Route::post('/broadcasting/autho', [BroadcastController::class, 'authenticate']);
     Route::get('/sponsor', [SponsorController::class, 'getAllSponsor']);
     Route::post('/profile-user',  [ProfileUserController::class, 'profile_user']);
-   
-    
 });
 
 
