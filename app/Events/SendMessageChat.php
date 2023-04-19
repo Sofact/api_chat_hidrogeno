@@ -31,7 +31,7 @@ class SendMessageChat implements ShouldBroadcast
             "sender" => [
                 "id" => $this->chat->FromUser->id,
                 "full_name" => $this->chat->FromUser->name,
-                "avatar" => $this->chat->FromUser->avatar  ? $this->chat->FromUser->avatar:  "non-avatar.png",
+                "avatar" => $this->chat->FromUser->usr_avatar  ? $this->chat->FromUser->usr_avatar:  "non-avatar.png",
             ],
             "message" => $this->chat->message,
             // "filw"

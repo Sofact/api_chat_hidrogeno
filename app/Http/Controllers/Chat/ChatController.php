@@ -350,7 +350,7 @@ class ChatController extends Controller
                     "sender" => [
                         "id" => $chat->FromUser->id,
                         "full_name" => $chat->FromUser->name.' '.$chat->FromUser->surnme,
-                        "avatar" => $chat->FromUser->avatar ? $chat->FromUser->avatar :  "non-avatar.png",
+                        "avatar" => $chat->FromUser->avatar ? $chat->FromUser->usr_avatar :  "non-avatar.png",
                     ],
                     "message" => $chat->message,
                     // "filw"
