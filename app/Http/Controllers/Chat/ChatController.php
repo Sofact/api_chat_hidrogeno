@@ -29,8 +29,7 @@ class ChatController extends Controller
         $chatGroup = ChatGroup::create([
                 
             "name" =>  $request->nombreGrupo,
-            "uniqd"=> uniqid(),
-            "avatar"=>  "non-avatar.png",
+            "uniqd"=> uniqid()
     ]);
 
     $idgrupo = ChatGroup::Where("name","=", [$request->nombreGrupo])
@@ -125,7 +124,7 @@ class ChatController extends Controller
                 
                     "id"=>$to_user->id,
                     "full_name" => $to_user->name,
-                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "non-avatar.png",
+                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "users/non-avatar.svg",
             ];
     
 
@@ -137,7 +136,7 @@ class ChatController extends Controller
                             "sender" => [
                                 "id" => $chat -> FromUser-> id,
                                 "full_name" => $chat-> FromUser->name,
-                                "avatar" => $chat->FromUser->usr_avatar ? $chat->FromUser->usr_avatar : "non-avatar.png",
+                                "avatar" => $chat->FromUser->usr_avatar ? $chat->FromUser->usr_avatar : "users/non-avatar.svg",
 
                             ],
                             
@@ -183,7 +182,7 @@ class ChatController extends Controller
                 
                     "id"=>$to_user->id,
                     "full_name" => $to_user->name,
-                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "non-avatar.png",
+                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "users/non-avatar.svg",
             ];
 
             $data["messages"] = [];
@@ -267,7 +266,7 @@ class ChatController extends Controller
                 
                     "id"=>$to_user->id,
                     "full_name" => $to_user->name,
-                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "non-avatar.png",
+                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "users/non-avatar-group.svg",
             ];
     
 
@@ -279,7 +278,7 @@ class ChatController extends Controller
                             "sender" => [
                                 "id" => $chat -> FromUser-> id,
                                 "full_name" => $chat-> FromUser->name,
-                                "avatar" => $chat->FromUser->usr_avatar ? $chat->FromUser->usr_avatar : "non-avatar.png",
+                                "avatar" => $chat->FromUser->usr_avatar ? $chat->FromUser->usr_avatar : "users/non-avatar-group.svg",
 
                             ],
                             
@@ -325,7 +324,7 @@ class ChatController extends Controller
                 
                     "id"=>$to_user->id,
                     "full_name" => $to_user->name,
-                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "non-avatar.png",
+                    "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "users/non-avatar-group.svg",
             ];
 
             $data["messages"] = [];
@@ -350,7 +349,7 @@ class ChatController extends Controller
                     "sender" => [
                         "id" => $chat->FromUser->id,
                         "full_name" => $chat->FromUser->name.' '.$chat->FromUser->surnme,
-                        "avatar" => $chat->FromUser->avatar ? $chat->FromUser->usr_avatar :  "non-avatar.png",
+                        "avatar" => $chat->FromUser->avatar ? $chat->FromUser->usr_avatar :  "users/non-avatar.svg",
                     ],
                     "message" => $chat->message,
                     // "filw"
