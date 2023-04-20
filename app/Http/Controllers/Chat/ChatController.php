@@ -41,7 +41,7 @@ class ChatController extends Controller
         "second_user" => 0,
         "chat_group_id" => $idgrupo->id,
         "last_at" => now()->format("Y-m-d H:i:s.u"),
-        "uniqd"=> uniqid(),
+        "uniqd"=> $idgrupo->uniqd,
 ]);
 
     } 
@@ -79,11 +79,12 @@ class ChatController extends Controller
             if($isGroup>0){
 
                 $chatRoom = ChatRoom::whereIn("first_user", [$request->to_user_id, auth('api')->user()->id])
-                                ->Wherein("chat_group_id", [$request->to_user_id, auth('api')->user()->id])
+                                ->Wherein("chat_group_id", [$request->to_user_id])
                                 ->first();
 
+               //  echo "ST:",$chatRoom;               
                 Chat::where('from_user_id', $request->to_user_id)
-                    ->where('chat_group_id', $request->to_user_id)
+                    ->where('chat_room_id', $chatRoom->id)
                     ->where('read_at', NULL)
                     ->update(['read_at' => now()]);
             
@@ -300,13 +301,18 @@ class ChatController extends Controller
         }else{
         
           //  echo "en el else????::::", $isExistRooms, "after exist";
+
+          $uniqd = ChatRoom::whereIn("chat_group_id", [$request->to_user_id])
+                           ->first();
             $chatroom = ChatRoom::create([
+
+               
                 
                     "first_user" => auth()->user()->id,
                     "second_user" => 0,
                     "chat_group_id" => $request->to_user_id,
                     "last_at" => now()->format("Y-m-d H:i:s.u"),
-                    "uniqd"=> uniqid(),
+                    "uniqd"=> $uniqd->uniqd,
             ]);
 
             $data = [];
@@ -397,10 +403,14 @@ class ChatController extends Controller
     }
 
     public function listMyChats (){
+
+       
     
-        $chatRooms = ChatRoom::where("first_user", auth('api')->user()->id)->orWhere("second_user", auth('api')->user()->id)
-                ->orderBy("last_at", "desc")
-                ->get();
+        $chatRooms = ChatRoom::where("first_user", auth('api')->user()->id)
+                                ->orWhere("second_user", auth('api')->user()->id)
+                                //->orWhereNotNull("chat_group_id")
+                                ->orderBy("last_at", "desc")
+                                ->get();
 
 
        return response()->json([
