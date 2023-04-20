@@ -39,7 +39,7 @@ class ProfileUserController extends Controller
 
 
 
-        $users = User::where('id','<>',auth('api')->user()->id)->orderBy('id','desc')->get();
+        $users = User::where('id','<>',auth('api')->user()->id)->orderBy('name','asc')->get();
         return response()->json(["users" => $users->map(function($user){
             return ProfileUserGeneralResource::make($user);
         }),
