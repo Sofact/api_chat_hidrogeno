@@ -121,13 +121,23 @@ class ChatController extends Controller
 
            }
 
+           if($isGroup>0){
             $data["user"]=[
+                
+                "id"=>$to_user->id,
+                "full_name" => $to_user->name,
+                "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "users/non-avatar-group.svg",
+                ];           
+            }
+            else
+            {
+                $data["user"]=[
                 
                     "id"=>$to_user->id,
                     "full_name" => $to_user->name,
                     "avatar"=> $to_user->usr_avatar ? $to_user->usr_avatar : "users/non-avatar.svg",
-            ];
-    
+                ];
+            }
 
             if (count($chats)> 0){
                 foreach($chats as $key =>$chat){
