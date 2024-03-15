@@ -47,4 +47,47 @@ class ProfileUserController extends Controller
     ]);
     }
 
+    public function setUserAuthorizationPersonalData(Request $request){
+        
+        $request->validate([
+            'datosPersonales' => 'required|boolean', 
+            'id' => 'required|integer'
+        ]);
+
+        
+
+       
+
+        $user = User::find( $request->id);
+
+
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado.'], 404);
+        }
+
+        $user->usr_datos_personales = $request->datosPersonales;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Los datos personales han sido actualizados correctamente.',
+            'user' => ProfileUserGeneralResource::make($user)
+        ]);
+    }
+
+    public function getUser($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            return response()->json([
+                'message' => 'Respuesta Ok',
+                'user' => $user
+            ], 200); // Utiliza el código 200 para una respuesta exitosa
+        } else {
+            return response()->json([
+                'message' => 'Usuario no encontrado'
+            ], 404); // Utiliza el código 404 cuando no se encuentra el usuario
+        }
+    }
+
+
 }

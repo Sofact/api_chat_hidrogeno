@@ -30,7 +30,8 @@ class User extends Authenticatable implements JWTSubject
             "usr_empresa" ,
             "usr_cargo" ,
             "usr_perfil",
-            "usr_avatar"
+            "usr_avatar",
+            "usr_datos_personales"
     ];
 
     /**
