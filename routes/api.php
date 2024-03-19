@@ -34,6 +34,7 @@ Route::group(['middleware' => 'api'], function($router){
     Route::post('/refresh', [JWTController::class, 'refresh']);
     Route::post('/profile', [JWTController::class, 'profile']);
     Route::get('/users/contact', [ProfileUserController::class, 'contactUsers']);
+    Route::get('/users/sponsors', [ProfileUserController::class, 'contactUserSponsors']);
     Route::get('/getUser/{id}', [ProfileUserController::class, 'getUser']);
     Route::get('/agenda', [AgendaController::class, 'getAllAgenda']);
     Route::get('/persona', [PersonaController::class, 'getAllPersona']);

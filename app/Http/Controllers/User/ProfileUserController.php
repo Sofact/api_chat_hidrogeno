@@ -47,6 +47,22 @@ class ProfileUserController extends Controller
     ]);
     }
 
+    public function contactUserSponsors(){
+
+        // Se agrega un segundo where para filtrar por 'user_data_persona' igual a 1
+        $users = User::where('id', '<>', auth('api')->user()->id)
+                    //->where('usr_datos_personales', '=', 1) // Filtro adicional aquí
+                     ->orderBy('name', 'asc')
+                     ->get();
+                        
+        return response()->json([
+            "users" => $users->map(function($user){
+                return ProfileUserGeneralResource::make($user);
+            }),
+        ]);
+    }
+  
+
     public function setUserAuthorizationPersonalData(Request $request){
         
         $request->validate([

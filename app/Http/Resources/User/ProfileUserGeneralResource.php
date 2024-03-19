@@ -26,7 +26,8 @@ class ProfileUserGeneralResource extends JsonResource
             "usr_empresa" =>$this->resource->usr_empresa,
             "usr_cargo" =>$this->resource->usr_cargo,
             "usr_perfil" =>$this->resource->usr_perfil,
-            "avatar"=> $this->resource->usr_avatar ? "".$this->resource->usr_avatar : "non-avatar.png"
+            "avatar"=> $this->resource->usr_avatar ? "".$this->resource->usr_avatar : "non-avatar.png",
+            "usr_datos_personales" => $this->resource->usr_datos_personales
 
         ];
     }
